@@ -6,9 +6,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Mail\FluidEmail;
-use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Mail\MailerInterface;
-use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -17,14 +15,16 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 use WapplerSystems\FormExtended\Domain\Model\OptIn;
 use WapplerSystems\FormExtended\Domain\Repository\OptInRepository;
 use WapplerSystems\FormExtended\Event\AfterOptInCreationEvent;
-use WapplerSystems\FormExtended\Event\AfterOptInValidationEvent;
 
 class DoubleOptInFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
 {
@@ -40,6 +40,7 @@ class DoubleOptInFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
         'validationPid' => null,
         'useFluidEmail' => true,
         'addHtmlPart' => true,
+        'templateName' => 'Default',
     ];
 
 
@@ -269,6 +270,72 @@ class DoubleOptInFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
             ->getFormRuntime()
             ->getFormDefinition()
             ->getElementByIdentifier($elementIdentifier);
+    }
+
+
+    protected function initializeFluidEmail(FormRuntime $formRuntime): FluidEmail
+    {
+        $templateConfiguration = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
+
+        if (is_array($this->options['templateRootPaths'] ?? null)) {
+            $templateConfiguration['templateRootPaths'] = array_replace_recursive(
+                $templateConfiguration['templateRootPaths'],
+                $this->options['templateRootPaths']
+            );
+            ksort($templateConfiguration['templateRootPaths']);
+        }
+
+        if (is_array($this->options['partialRootPaths'] ?? null)) {
+            $templateConfiguration['partialRootPaths'] = array_replace_recursive(
+                $templateConfiguration['partialRootPaths'],
+                $this->options['partialRootPaths']
+            );
+            ksort($templateConfiguration['partialRootPaths']);
+        }
+
+        if (is_array($this->options['layoutRootPaths'] ?? null)) {
+            $templateConfiguration['layoutRootPaths'] = array_replace_recursive(
+                $templateConfiguration['layoutRootPaths'],
+                $this->options['layoutRootPaths']
+            );
+            ksort($templateConfiguration['layoutRootPaths']);
+        }
+
+        $fluidEmail = GeneralUtility::makeInstance(
+            FluidEmail::class,
+            GeneralUtility::makeInstance(TemplatePaths::class, $templateConfiguration)
+        );
+
+        if (!isset($this->options['templateName']) || $this->options['templateName'] === '') {
+            throw new FinisherException('The option "templateName" must be set to use FluidEmail.', 1599834020);
+        }
+
+        // Migrate old template name to default FluidEmail name
+        if ($this->options['templateName'] === '{@format}.html') {
+            $this->options['templateName'] = 'Default';
+        }
+
+        // Remove controller name from request to remove controller name from template path
+        $request = clone $this->finisherContext->getRequest();
+        $request = $request->withControllerName('');
+
+        $fluidEmail
+            ->setRequest($request)
+            ->setTemplate($this->options['templateName'])
+            ->assignMultiple([
+                'finisherVariableProvider' => $this->finisherContext->getFinisherVariableProvider(),
+                'form' => $formRuntime,
+            ]);
+
+        if (is_array($this->options['variables'] ?? null)) {
+            $fluidEmail->assignMultiple($this->options['variables']);
+        }
+
+        $fluidEmail
+            ->getViewHelperVariableContainer()
+            ->addOrUpdate(RenderRenderableViewHelper::class, 'formRuntime', $formRuntime);
+
+        return $fluidEmail;
     }
 
 }
