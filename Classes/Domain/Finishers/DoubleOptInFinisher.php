@@ -315,12 +315,8 @@ class DoubleOptInFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
             $this->options['templateName'] = 'Default';
         }
 
-        // Remove controller name from request to remove controller name from template path
-        $request = clone $this->finisherContext->getRequest();
-        $request = $request->withControllerName('');
-
         $fluidEmail
-            ->setRequest($request)
+            ->setRequest($this->finisherContext->getRequest())
             ->setTemplate($this->options['templateName'])
             ->assignMultiple([
                 'finisherVariableProvider' => $this->finisherContext->getFinisherVariableProvider(),
