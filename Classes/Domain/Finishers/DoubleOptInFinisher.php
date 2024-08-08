@@ -5,6 +5,7 @@ namespace WapplerSystems\FormExtended\Domain\Finishers;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Service\FlexFormService;
@@ -235,13 +236,22 @@ class DoubleOptInFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
     protected function prepareData(array $elementsConfiguration)
     {
         $data = [];
+        $formRuntime = $this->finisherContext->getFormRuntime();
+        $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
+
         foreach ($this->getFormValues() as $elementIdentifier => $elementValue) {
 
             if (!in_array($elementIdentifier, $elementsConfiguration, true)) {
                 continue;
             }
 
-            $data[$elementIdentifier] = $elementValue;
+            $element = $formRuntime->getFormDefinition()->getElementByIdentifier($elementIdentifier);
+            if ($element !== null && ($element->getType() === 'Password' || $element->getType() === 'AdvancedPassword')) {
+                $data[$elementIdentifier] = $hashInstance->getHashedPassword($elementValue);
+            } else {
+                $data[$elementIdentifier] = $elementValue;
+            }
+
         }
         return $data;
     }
