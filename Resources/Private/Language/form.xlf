@@ -31,6 +31,27 @@
             <trans-unit id="tt_content.finishersDefinition.FeUser.label">
                 <source>Fe-User</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.SelectionMixin.editor.renderAs.label">
+                <source>Render as</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.MultiSelect.editor.renderAs.default.label">
+                <source>Classic with Ctrl</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.MultiSelect.editor.renderAs.dropdown.label">
+                <source>Dropdown</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.MultiSelect.editor.renderAs.tagsWithDropdown.label">
+                <source>Tags with dropdown</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.MultiSelect.editor.renderAs.tagsWithTaglist.label">
+                <source>Tags with list below</source>
+            </trans-unit>
+            <trans-unit id="element.MultiSelect.properties.counter.placeholder">
+                <source>1 option selected|%d options selected</source>
+            </trans-unit>
+            <trans-unit id="element.MultiSelect.properties.remove_button.title">
+                <source>Remove</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

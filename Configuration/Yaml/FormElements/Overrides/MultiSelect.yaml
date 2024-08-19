@@ -1,9 +1,27 @@
-TYPO3:
-  CMS:
-    Form:
-      prototypes:
-        standard:
-          formElementsDefinition:
-            MultiSelect:
-              __inheritances:
-                70: TYPO3.CMS.Form.mixins.formElementMixins.ExtendedAttributesMixin
+prototypes:
+  standard:
+    formElementsDefinition:
+      MultiSelect:
+        __inheritances:
+          70: TYPO3.CMS.Form.mixins.formElementMixins.ExtendedAttributesMixin
+        formEditor:
+          editors:
+            270:
+              identifier: renderAs
+              templateName: Inspector-SingleSelectEditor
+              label: formEditor.elements.SelectionMixin.editor.renderAs.label
+              propertyPath: properties.renderAs
+              selectOptions:
+                10:
+                  value: default
+                  label: formEditor.elements.MultiSelect.editor.renderAs.default.label
+                20:
+                  value: dropdown
+                  label: formEditor.elements.MultiSelect.editor.renderAs.dropdown.label
+                30:
+                  value: tagsWithDropdown
+                  label: formEditor.elements.MultiSelect.editor.renderAs.tagsWithDropdown.label
+                40:
+                  value: tagsWithTaglist
+                  label: formEditor.elements.MultiSelect.editor.renderAs.tagsWithTaglist.label
+        implementationClassName: WapplerSystems\FormExtended\Domain\Model\FormElements\MultiSelect

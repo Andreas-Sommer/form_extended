@@ -30,6 +30,14 @@
                 <source>Set by site configuration and plugin</source>
                 <target>Wird durch die Site-Konfiguration und das Plugin gesetzt</target>
             </trans-unit>
+            <trans-unit id="element.MultiSelect.properties.counter.placeholder">
+                <source>1 option selected|%d options selected</source>
+                <target>1 Option ausgewählt|%d Optionen ausgewählt</target>
+            </trans-unit>
+            <trans-unit id="element.MultiSelect.properties.remove_button.title">
+                <source>Remove</source>
+                <target>Löschen</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

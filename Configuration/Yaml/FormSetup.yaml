@@ -23,46 +23,43 @@ imports:
   - { resource: "./FormElements/Overrides/Textarea.yaml" }
 
 
-TYPO3:
-  CMS:
-    Form:
-      formManager:
-        translationFiles:
-          27: 'EXT:form_extended/Resources/Private/Language/form.xlf'
+formManager:
+  translationFiles:
+    27: 'EXT:form_extended/Resources/Private/Language/form.xlf'
 
-      prototypes:
-        standard:
-          formEditor:
-            translationFiles:
-              27: 'EXT:form_extended/Resources/Private/Language/form.xlf'
-            formEditorPartials:
-              FormElement-PrivacyPolicyCheckbox: Stage/SimpleTemplate
-              FormElement-StaticText: Stage/SimpleTemplate
-              Inspector-StaticTextEditor: Inspector/StaticTextEditor
+prototypes:
+  standard:
+    formEditor:
+      translationFiles:
+        27: 'EXT:form_extended/Resources/Private/Language/form.xlf'
+      formEditorPartials:
+        FormElement-PrivacyPolicyCheckbox: Stage/SimpleTemplate
+        FormElement-StaticText: Stage/SimpleTemplate
+        Inspector-StaticTextEditor: Inspector/StaticTextEditor
 
-            formEditorFluidConfiguration:
-              partialRootPaths:
-                780: 'EXT:form_extended/Resources/Private/Backend/Partials/FormEditor/'
-              layoutRootPaths:
-                780: 'EXT:form_extended/Resources/Private/Backend/Layouts/FormEditor/'
+      formEditorFluidConfiguration:
+        partialRootPaths:
+          780: 'EXT:form_extended/Resources/Private/Backend/Partials/FormEditor/'
+        layoutRootPaths:
+          780: 'EXT:form_extended/Resources/Private/Backend/Layouts/FormEditor/'
 
-            dynamicRequireJsModules:
-              additionalViewModelModules:
-                90: '@wapplersystems/form_extended/backend/form-editor/view-model.js'
+      dynamicRequireJsModules:
+        additionalViewModelModules:
+          90: '@wapplersystems/form_extended/backend/form-editor/view-model.js'
 
 
-      mixins:
-        formElementMixins:
-          ExtendedAttributesMixin:
-            formEditor:
-              editors:
-                710:
-                  identifier: 'info'
-                  templateName: 'Inspector-TextareaEditor'
-                  label: 'formEditor.elements.ExtendedAttributesMixin.editor.info.label'
-                  propertyPath: 'properties.info'
-                750:
-                  identifier: 'hideTitle'
-                  templateName: 'Inspector-CheckboxEditor'
-                  label: 'formEditor.elements.ExtendedAttributesMixin.editor.hideTitle.label'
-                  propertyPath: 'properties.hideTitle'
+mixins:
+  formElementMixins:
+    ExtendedAttributesMixin:
+      formEditor:
+        editors:
+          710:
+            identifier: 'info'
+            templateName: 'Inspector-TextareaEditor'
+            label: 'formEditor.elements.ExtendedAttributesMixin.editor.info.label'
+            propertyPath: 'properties.info'
+          750:
+            identifier: 'hideTitle'
+            templateName: 'Inspector-CheckboxEditor'
+            label: 'formEditor.elements.ExtendedAttributesMixin.editor.hideTitle.label'
+            propertyPath: 'properties.hideTitle'
