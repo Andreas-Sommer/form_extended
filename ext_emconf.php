@@ -1,7 +1,7 @@
 <?php
 $EM_CONF['form_extended'] = [
     'title' => 'Form Extended',
-    'description' => 'Multi upload field, double opt in method and other',
+    'description' => 'Multi upload field, double opt in, tag select field and other',
     'category' => 'misc',
     'state' => 'stable',
     'clearCacheOnLoad' => 1,
