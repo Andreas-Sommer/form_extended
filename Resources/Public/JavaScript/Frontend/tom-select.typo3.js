@@ -1688,7 +1688,7 @@
 	};
 
 	/**
-	 * use setTimeout if timeout > 0
+	 * use setTimeout if timeout > 0 
 	 */
 	const timeout = (fn, timeout) => {
 	  if (timeout > 0) {
@@ -4939,6 +4939,7 @@
 	      });
 	      taglist.append(tag);
 	    }
+	    self.control.lastChild.setAttribute('disabled', 'disabled');
 	  });
 	  self.on('item_add', (value, item) => {
 	    taglist.querySelectorAll(`li > button[data-value="${value}"]`)[0].parentNode.style.display = 'none';
@@ -4946,6 +4947,7 @@
 	  self.on('item_remove', (value, item) => {
 	    taglist.querySelectorAll(`[data-value="${value}"]`)[0].parentNode.style.display = '';
 	  });
+	  self.hook('instead', 'open', () => {});
 	}
 
 	function counter (userOptions) {
@@ -4998,5 +5000,5 @@
 	return TomSelect;
 
 }));
-var tomSelect=function(el,opts){return new TomSelect(el,opts);}
+var tomSelect=function(el,opts){return new TomSelect(el,opts);} 
 //# sourceMappingURL=tom-select.typo3.js.map
