@@ -18,9 +18,16 @@
                                             <table cellspacing="0" border="0">
                                                 <f:for each="{formValue.processedValue}" as="value">
                                                     <tr>
-                                                        <f:if condition="{formValue.element.type} == 'FileUpload'">
+                                                        <f:if condition="{formValue.element.type} == 'FileUpload' || {formValue.element.type} == 'ImageUpload'">
                                                             <f:then>
-                                                                <td>{value.originalResource.name}</td>
+                                                                <f:if condition="{form.currentFinisher.uploadsAttached}">
+                                                                    <f:then>
+                                                                        <td>{value.originalResource.name}</td>
+                                                                    </f:then>
+                                                                    <f:else>
+                                                                        <td><a target="_blank" href="{value.originalResource.publicUrl}">{value.originalResource.name}</a></td>
+                                                                    </f:else>
+                                                                </f:if>
                                                             </f:then>
                                                             <f:else>
                                                                 <td>{value}</td>

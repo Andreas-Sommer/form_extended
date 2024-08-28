@@ -184,4 +184,11 @@ class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
 
         GeneralUtility::makeInstance(MailerInterface::class)->send($mail);
     }
+
+
+    public function isUploadsAttached(): bool
+    {
+        return (bool)$this->parseOption('attachUploads');
+    }
+
 }
