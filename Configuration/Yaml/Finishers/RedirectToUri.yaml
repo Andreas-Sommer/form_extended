@@ -1,0 +1,14 @@
+prototypes:
+  standard:
+    finishersDefinition:
+      RedirectToUri:
+        implementationClassName: WapplerSystems\FormExtended\Domain\Finishers\RedirectToUriFinisher
+        formEditor:
+          iconIdentifier: form-finisher
+          label: 'Redirect to URI'
+          predefinedDefaults:
+            options:
+              uri: ''
+        FormEngine:
+          label: tt_content.finishersDefinition.Redirect.label
+          elements:

@@ -5,6 +5,7 @@ imports:
   - { resource: "./Finishers/EmailToReceiver.yaml" }
   - { resource: "./Finishers/EmailToSender.yaml" }
   - { resource: "./Finishers/FeUser.yaml" }
+  - { resource: "./Finishers/RedirectToUri.yaml" }
 
   - { resource: "./FormElements/PrivacyPolicyCheckbox.yaml" }
 
